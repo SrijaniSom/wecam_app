@@ -3,11 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam Feed</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Video Feed Display</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const videoContainer = document.getElementById('videoContainer');
+            const socket = new WebSocket('ws://localhost:8765');
+
+            // Set a default image source
+            videoContainer.src = 'Rectangle.png';
+
+            socket.onmessage = function(event) {
+                videoContainer.src = `data:image/jpg;base64,${event.data}`;
+            };
+
+            socket.onclose = function(event) {
+                console.error('WebSocket closed unexpectedly:', event);
+            };
+        });
+    </script>
 </head>
 <body>
-    <video id="videoFeed" width="640" height="480" autoplay></video>
-    <script src="script.js"></script>
+    <img id="videoContainer" alt="Video Feed">
 </body>
 </html>
+

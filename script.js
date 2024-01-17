@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const video = document.getElementById('videoFeed');
 
-    // Using navigator.mediaDevices to access the user's camera
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then((stream) => {
-            video.srcObject = stream;
-        })
-        .catch((error) => {
-            console.error('Error accessing the camera:', error);
-        });
+    if (!video) {
+        console.error('Video element not found');
+        return;
+    }
+
+    const videoPath = 'path/to/your/video.mp4';
+
+    video.src = videoPath;
 });

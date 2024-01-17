@@ -1,19 +1,29 @@
 import cv2
+import asyncio
+import base64
+import websockets
 
-# Open a connection to the camera (0 represents the default camera)
-cap = cv2.VideoCapture(0)
+async def send_video(websocket, path):
+    video_path = 'Minecraft Death Swap 2 {Smarty VS Dreamboy}.mp4.crdownload'  # Replace with the path to your video file
+    cap = cv2.VideoCapture(video_path)
 
-while True:
-    # Read a frame from the camera
-    ret, frame = cap.read()
+    try:
+        while True:
+            success, frame = cap.read()
+            if not success:
+                break
 
-    # Display the frame
-    cv2.imshow('Webcam Feed', frame)
+            # Convert frame to base64
+            _, buffer = cv2.imencode('.jpg', frame)
+            frame_base64 = base64.b64encode(buffer).decode('utf-8')
 
-    # Break the loop if 'q' key is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+            await websocket.send(frame_base64)
+            await asyncio.sleep(0.05)  # Adjust the delay based on your desired frame rate
 
-# Release the camera and close the window
-cap.release()
-cv2.destroyAllWindows()
+    finally:
+        cap.release()
+
+if __name__ == "__main__":
+    start_server = websockets.serve(send_video, "localhost", 8765)
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever() 
