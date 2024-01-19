@@ -24,6 +24,8 @@ async def send_video(websocket, path):
         cap.release()
 
 if __name__ == "__main__":
-    start_server = websockets.serve(send_video, "localhost", 8765)
+    # Replace "localhost" with the IP address 100.64.81.31
+    server_ip = "100.64.81.31"
+    start_server = websockets.serve(send_video, server_ip, 8765)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()

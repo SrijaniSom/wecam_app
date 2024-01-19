@@ -7,7 +7,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const videoContainer = document.getElementById('videoContainer');
-            const socket = new WebSocket('ws://localhost:8765');
+            const serverIP = "100.64.81.31";  // Replace with your server's IP address
+            const socket = new WebSocket(`ws://${serverIP}:8765`);
 
             // Set a default image source
             videoContainer.src = 'Rectangle.png';
@@ -26,4 +27,3 @@
     <img id="videoContainer" alt="Video Feed">
 </body>
 </html>
-
